@@ -1,141 +1,97 @@
 #include <iostream>
+
 using namespace std;
 
-struct Node {
-    int data;
-    Node* next;
-};
-
-class Linked_List {
+class List {
 private:
-    Node* head;
-    Node* tail;
+    int* data;
+    int capacity;
+    int size;
+
+    void resize() {
+        capacity *= 2;
+        int* newData = new int[capacity];
+        for (int i = 0; i < size; ++i)
+            newData[i] = data[i];
+        delete[] data;
+        data = newData;
+    }
 
 public:
-    Linked_List() : head(NULL), tail(NULL) {}
-
-    ~Linked_List() {
-        while (head != NULL) {
-            Node* temp = head;
-            head = head->next;
-            delete temp;
-        }
+    List(int initialCapacity = 10) {
+        capacity = initialCapacity;
+        data = new int[capacity];
+        size = 0;
     }
 
-    // Chèn vào đầu danh sách O(1)
-    void insertFront(int value) {
-        Node* newNode = new Node{value, head};
-        head = newNode;
-        if (tail == NULL) tail = newNode;
+    ~List() {
+        delete[] data;
     }
 
-    // Chèn vào cuối danh sách O(n)
-    void insertBack(int value) {
-        Node* newNode = new Node{value, NULL};
-        if (tail != NULL) {
-            tail->next = newNode;
-            tail = newNode;
-        } else {
-            head = tail = newNode;
-        }
+    int getSize() {
+        return size;
     }
-
-    // Chèn vào vị trí i O(n)
+    //truy cap
+    int get(int index) {
+        if (index < 0 || index >= size)
+             throw out_of_range("Index out of range"); //O(1)
+        return data[index];
+    }
+    //chèn vào đầu
+    void insertFirst(int value) {
+        if (size == capacity) resize();
+        for (int i = size; i > 0; --i) //O(n)
+            data[i] = data[i - 1];
+        data[0] = value;
+        size++;
+    }
+    //chèn vào cuối
+    void insertLast(int value) {
+        if (size == capacity) resize();//O(1)/O(n)
+        data[size++] = value;
+    }
+    //chen tại i
     void insertAt(int index, int value) {
-        if (index == 0) {
-            insertFront(value);
-            return;
-        }
-        Node* current = head;
-        for (int i = 0; i < index - 1 && current != NULL; i++) {
-            current = current->next;
-        }
-        if (current == NULL) {
-            cout << "Index out of bounds\n";
-            return;
-        }
-        Node* newNode = new Node{value, current->next};
-        current->next = newNode;
-        if (newNode->next == NULL) tail = newNode;
+        if (index < 0 || index > size)
+            throw out_of_range("Index out of range");//O(n)
+        if (size == capacity) resize();
+        for (int i = size; i > index; --i)
+            data[i] = data[i - 1];
+        data[index] = value;
+        size++;
     }
-
-    // Xóa đầu
-    void deleteFront() {
-        if (head == NULL) return; //O(1)
-        Node* temp = head;
-        head = head->next;
-        delete temp;
-        if (head == NULL) tail = NULL;
+    //xóa đầu
+    void deleteFirst() {
+        if (size == 0) return;
+        for (int i = 0; i < size - 1; ++i) //O(n)
+            data[i] = data[i + 1];
+        size--;
     }
-
-    // Xóa cuối
-    void deleteBack() {
-        if (head == NULL) return;//O(n)
-        if (head->next == NULL) {
-            delete head;
-            head = tail = NULL;
-            return;
-        }
-        Node* current = head;
-        while (current->next != tail) {
-            current = current->next;
-        }
-        delete tail;
-        tail = current;
-        current->next = NULL;
+    //xóa cuối O(1)
+    void deleteLast() {
+        if (size == 0) return;
+        size--;
     }
-
-    // Xóa vị trí i
+    //xóa khỏi vị trí i
     void deleteAt(int index) {
-        if (index == 0) {
-            deleteFront();
-            return;
+        if (index < 0 || index >= size) {
+            cout << endl;
+            return;                             //O(n)
         }
-        Node* current = head; //O(n)
-        for (int i = 0; i < index - 1 && current != NULL; i++) {
-            current = current->next;
-        }
-        if (current == NULL || current->next == NULL) {
-            cout << "Index out of bounds\n";
-            return;
-        }
-        Node* temp = current->next;
-        current->next = temp->next;
-        if (temp == tail) tail = current;
-        delete temp;
+        for (int i = index; i < size - 1; ++i)
+            data[i] = data[i + 1];
+        size--;
     }
-
-    // Truy cập phần tử tại vị trí i
-    int getAt(int index) {
-        Node* current = head;
-        for (int i = 0; i < index && current != NULL; i++) {  //O(n)
-            current = current->next;
-        }
-        if (current == NULL) {
-            return -1;
-        }
-        return current->data;
-    }
-
-    // Duyệt xuôi
+    //duyệt xuôi O(n)
     void traverseForward() {
-        Node* current = head; //O(n)
-        while (current != NULL) {
-            cout << current->data << " ";
-            current = current->next;
-        }
+        for (int i = 0; i < size; ++i)
+            cout << data[i] << " ";
         cout << endl;
     }
-
-    // Duyệt ngược (đệ quy)
-    void traverseBackwardHelper(Node* node) {
-        if (node == NULL) return;
-        traverseBackwardHelper(node->next); //O(n)
-        cout << node->data << " ";
-    }
-
+    //duyệt ngược O(n)
     void traverseBackward() {
-        traverseBackwardHelper(head);
+        for (int i = size - 1; i >= 0; --i)
+            cout << data[i] << " ";
         cout << endl;
     }
 };
