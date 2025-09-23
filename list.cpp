@@ -34,7 +34,7 @@ public:
     //truy cap
     int get(int index) {
         if (index < 0 || index >= size)
-             throw out_of_range("Index out of range"); //O(1)
+             cout << endl; //O(1)
         return data[index];
     }
     //chèn vào đầu
@@ -53,7 +53,7 @@ public:
     //chen tại i
     void insertAt(int index, int value) {
         if (index < 0 || index > size)
-            throw out_of_range("Index out of range");//O(n)
+            cout << endl;    //O(n)
         if (size == capacity) resize();
         for (int i = size; i > index; --i)
             data[i] = data[i - 1];
