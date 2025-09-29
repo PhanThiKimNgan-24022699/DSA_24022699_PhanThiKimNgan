@@ -38,7 +38,7 @@ public:
         return data[index];
     }
     //chèn vào đầu
-    void insertFirst(int value) {
+    void addFirst(int value) {
         if (size == capacity) resize();
         for (int i = size; i > 0; --i) //O(n)
             data[i] = data[i - 1];
@@ -46,12 +46,12 @@ public:
         size++;
     }
     //chèn vào cuối
-    void insertLast(int value) {
+    void addtLast(int value) {
         if (size == capacity) resize();//O(1)/O(n)
         data[size++] = value;
     }
     //chen tại i
-    void insertAt(int index, int value) {
+    void addtAt(int index, int value) {
         if (index < 0 || index > size)
             cout << endl;    //O(n)
         if (size == capacity) resize();
@@ -61,19 +61,19 @@ public:
         size++;
     }
     //xóa đầu
-    void deleteFirst() {
+    void removeFirst() {
         if (size == 0) return;
         for (int i = 0; i < size - 1; ++i) //O(n)
             data[i] = data[i + 1];
         size--;
     }
     //xóa cuối O(1)
-    void deleteLast() {
+    void removeLast() {
         if (size == 0) return;
         size--;
     }
     //xóa khỏi vị trí i
-    void deleteAt(int index) {
+    void removeAt(int index) {
         if (index < 0 || index >= size) {
             cout << endl;
             return;                             //O(n)
@@ -93,5 +93,42 @@ public:
         for (int i = size - 1; i >= 0; --i)
             cout << data[i] << " ";
         cout << endl;
+    }
+};
+
+class Queue {
+private:
+    List list;
+
+public:
+
+    bool isEmpty() {
+        return list.getSize() == 0;
+    }
+
+    void enqueue(int item) {
+        list.addtFirst(item); // O(1) 
+    }
+
+    int dequeue() {
+        if (isEmpty()) {
+            cout << "Queue underflow!" << endl;
+            return -1;
+        }
+        int value = list.get(list.getSize() - 1);
+        list.removeLast(); //O(n)
+        return value;
+    }
+
+    int front() {
+        if (isEmpty()) {
+            cout << "Queue is empty!" << endl;
+            return -1;
+        }
+        return list.get(list.getSize() - 1); // Phần tử cuối là front
+    }
+
+     int size() {
+        return list.getSize();
     }
 };
