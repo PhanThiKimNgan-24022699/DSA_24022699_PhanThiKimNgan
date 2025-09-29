@@ -95,3 +95,43 @@ public:
         cout << endl;
     }
 };
+
+class Stack {
+private:
+    List list;
+
+public:
+    // Kiểm tra stack có rỗng không
+    bool isEmpty() {
+        if (list.getSize() == 0)
+            return true;
+        else
+            return false;
+    }
+
+    // Thêm phần tử vào stack
+    void push(int item) {
+        list.insertLast(item); // O(1)/O(n)
+    }
+
+    // Xóa phần tử cuối và trả về giá trị đó
+    int pop() {
+        if (isEmpty()) {
+            cout << "Stack underflow!" << endl;
+            return -1;
+        }
+        int last = list.get(list.getSize() - 1);
+        list.deleteLast(); // O(1)
+        return last;
+    }
+
+    // Trả về kích thước stack
+    int size() {
+        return list.getSize();
+    }
+
+    // Lấy giá trị phần tử cuối cùng
+    int top() {
+        return list.getLast();
+    }
+};
