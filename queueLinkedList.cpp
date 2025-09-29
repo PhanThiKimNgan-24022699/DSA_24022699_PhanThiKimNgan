@@ -6,15 +6,15 @@ struct Node {
     Node* next;
 };
 
-class Linked_List {
+class linkedList {
 private:
     Node* head;
     Node* tail;
 
 public:
-    Linked_List() : head(NULL), tail(NULL) {}
+    linkedList() : head(NULL), tail(NULL) {}
 
-    ~Linked_List() {
+    ~linkedList() {
         while (head != NULL) {
             Node* temp = head;
             head = head->next;
@@ -23,14 +23,14 @@ public:
     }
 
     // Chèn vào đầu danh sách O(1)
-    void insertFront(int value) {
+    void addFirst(int value) {
         Node* newNode = new Node{value, head};
         head = newNode;
         if (tail == NULL) tail = newNode;
     }
 
     // Chèn vào cuối danh sách O(n)
-    void insertBack(int value) {
+    void addLast(int value) {
         Node* newNode = new Node{value, NULL};
         if (tail != NULL) {
             tail->next = newNode;
@@ -41,7 +41,7 @@ public:
     }
 
     // Chèn vào vị trí i O(n)
-    void insertAt(int index, int value) {
+    void addAt(int index, int value) {
         if (index == 0) {
             insertFront(value);
             return;
@@ -60,7 +60,7 @@ public:
     }
 
     // Xóa đầu
-    void deleteFront() {
+    void removeFirst() {
         if (head == NULL) return; //O(1)
         Node* temp = head;
         head = head->next;
@@ -69,7 +69,7 @@ public:
     }
 
     // Xóa cuối
-    void deleteBack() {
+    void removeLast() {
         if (head == NULL) return;//O(n)
         if (head->next == NULL) {
             delete head;
@@ -86,7 +86,7 @@ public:
     }
 
     // Xóa vị trí i
-    void deleteAt(int index) {
+    void removeAt(int index) {
         if (index == 0) {
             deleteFront();
             return;
@@ -138,4 +138,57 @@ public:
         traverseBackwardHelper(head);
         cout << endl;
     }
+
+    bool isEmpty() {
+        return count == 0;
+    }
+
+    void enqueue1(int value) {
+        addFirst(value);
+    }
+
+    int dequeue1() {
+        if (isEmpty()) {
+            cout << endl;
+            return -1;
+        }
+        int val = tail->data;
+        removeLast();
+        return val;
+    }
+
+    int front1() {
+        if (isEmpty()) {
+            cout << endl;
+            return -1;
+        }
+        return tail->data;
+    }
+
+    void enqueue2(int value) {
+        addLast(value);
+    }
+
+    int dequeue2() {
+        if (isEmpty()) {
+            cout << endl;
+            return -1;
+        }
+        int val = head->data;
+        removeFirst();
+        return val;
+    }
+
+    int front2() {
+        if (isEmpty()) {
+            cout << endl;
+            return -1;
+        }
+        return head->data;
+    }
+
+    int size() {
+        return count;
+    }
 };
+
