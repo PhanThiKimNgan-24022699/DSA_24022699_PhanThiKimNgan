@@ -6,15 +6,15 @@ struct Node {
     Node* next;
 };
 
-class Linked_List {
+class linkedList {
 private:
     Node* head;
     Node* tail;
 
 public:
-    Linked_List() : head(NULL), tail(NULL) {}
+    linkedList() : head(NULL), tail(NULL) {}
 
-    ~Linked_List() {
+    ~linkedList() {
         while (head != NULL) {
             Node* temp = head;
             head = head->next;
@@ -137,5 +137,50 @@ public:
     void traverseBackward() {
         traverseBackwardHelper(head);
         cout << endl;
+    }
+};
+
+class Stack {
+private:
+    linkedList list;
+    int count;
+
+public:
+    Stack() : count(0) {}
+
+    bool isEmpty() {
+        if (count == 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    void push(int item) {
+        list.insertFront(item); // O(1)
+        count++;
+    }
+
+    int pop() {
+        if (isEmpty()) {
+            cout << "Stack underflow!" << endl;
+            return -1;
+        }
+        int topValue = list.getAt(0); // Phần tử đầu chính là top
+        list.deleteFront(); // O(1)
+        count--;
+        return topValue;
+    }
+
+    int top() {
+        if (isEmpty()) {
+            cout << "Stack is empty!" << endl;
+            return -1;
+        }
+        return list.getAt(0); // O(1)
+    }
+
+    int size() {
+        return count;
     }
 };
