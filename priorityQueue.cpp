@@ -21,7 +21,7 @@ private:
     }
 
 public:
-    // Chèn giá trị vào
+    // Chèn giá trị
     void insert(int value) {
         heap.push_back(value);
         swim(heap.size() - 1);
